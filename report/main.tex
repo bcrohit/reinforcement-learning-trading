@@ -1,0 +1,70 @@
+\documentclass[12pt]{scrartcl}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{amsmath,amssymb,amsfonts,amsthm,mathtools}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8x]{inputenc}
+\usepackage{lmodern}
+\usepackage{dsfont}
+\usepackage{bbm}
+\usepackage[round]{natbib}
+\usepackage{color} 
+\usepackage[defaultlines=2,all]{nowidow}
+\usepackage{caption}
+\usepackage[labelformat=simple]{subcaption}
+\usepackage{hyperref} % Added for clickable links
+\usepackage{placeins} % For FloatBarrier to prevent figures from floating past section boundaries
+\usepackage{float} % For [H] placement specifier to force exact table/figure placement
+\renewcommand\thesubfigure{(\alph{subfigure})}
+
+% Set margin if needed, otherwise scrartcl default is used. 
+% Standard academic reports often use geometry, but kept minimal here to match your original style.
+
+\setlength\parindent{0pt}
+\setlength{\parskip}{6pt plus 1pt minus 1pt}
+
+\newcommand{\red}{\textcolor{red}}
+
+\begin{document}
+
+\begin{titlepage}
+	\centering
+	{\scshape\LARGE TU Dortmund \par}
+	\vspace{1cm}
+	{\scshape\Large On the Theory and Practice of Monte Carlo Simulations \par}
+	\vspace{0.5cm}
+	{\large Winter Semester 2025/26 \par}
+	\vspace{2cm}
+	{\huge\bfseries Final Project: Monte Carlo methods in reinforcement learning\par}
+	\vspace{3cm}
+	{\Large Author: Rohith B Chowdappa \par}
+	\vspace{0.5 cm}
+	{\large Student ID: 269962 \par}
+	\vfill
+	{\large Instructors: \par}
+	{\large Prof. Dr. Katja Ickstadt \par}
+	{\large Zeyu Ding \par}
+	\vspace{1cm}
+	{\large \today\par}
+\end{titlepage}
+
+\tableofcontents
+\thispagestyle{empty}
+
+\cleardoublepage
+
+\setcounter{page}{1}
+
+% Include all sections
+\input{sections/introduction}
+\input{sections/theoretical_background}
+\input{sections/data_description}
+\input{sections/empirical_results}
+\FloatBarrier % Ensure all figures from empirical results are placed before conclusion
+\input{sections/conclusion}
+\input{sections/bibliography}
+\input{sections/appendices}
+
+\end{document}
+

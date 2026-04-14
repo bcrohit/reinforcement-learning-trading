@@ -1,0 +1,12 @@
+% --- SECTION 1: INTRODUCTION ---
+\section{Introduction}
+
+Financial markets are complex, random, and highly volatile systems in which decision-making under uncertainty plays a central role. Designing trading strategies that can adapt to evolving market conditions remains a challenging problem due to noise, non-stationarity, and the absence of a known model governing price movement. Reinforcement learning (RL) offers a framework in which an agent learns directly from interaction with the environment and the data as opposed to traditional rule-based strategies \citep{hsinhungw2024}.
+
+In this project, I investigate the use of Monte Carlo policy gradient methods for algorithmic trading within the gym-trading-env framework. The trading problem is formulated as a Markov Decision Process (MDP), where the agent observes market features derived from real historical data and decides between discrete actions (e.g., long, short, hold). The environment provides rewards based on portfolio performance, allowing the agent to iteratively improve its policy through experience.
+
+The primary research question of this study is: \emph{Can a Monte Carlo policy gradient method (REINFORCE) learn a profitable and stable trading policy from historical market data, and how does its performance compare to baseline strategies such as random trading?}
+
+Monte Carlo (MC) methods are particularly appropriate for this problem for several reasons. First, financial returns are inherently noisy and difficult to model analytically. MC RL does not require an explicit transition model of the market; instead, it estimates expected returns directly from sampled trajectories. Second, policy gradient methods optimize the policy parameters directly, making them well-suited for high-dimensional continuous state spaces typical of financial time series. Third, Monte Carlo estimation produces unbiased return estimates, enabling a theoretically grounded analysis of convergence behavior, albeit with potentially high variance.
+
+In this project, I implement the REINFORCE algorithm \citep{williams1992simple} using a neural network policy (multi-layer perceptron with softmax output) to model a stochastic trading strategy. The agent is trained on historical market data, and policy updates are performed at the end of each episode using the discounted return. To reduce variance in gradient estimates, a variant of the same alogorithm was introduced, these two main methods was then compared to a random trading strategy which acts as a benchmark.

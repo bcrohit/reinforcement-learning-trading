@@ -1,0 +1,22 @@
+% --- SECTION 5: CONCLUSION ---
+\section{Conclusion and Discussion}
+
+This study found that Monte Carlo policy gradient methods, specifically the REINFORCE algorithm, can learn profitable and systematic trading strategies from historical DAX index data and consistently outperform random trading. Empirical results showed that the use of a value-function baseline further improved performance by reducing variance and enhancing risk-adjusted returns, demonstrating the robustness and effectiveness of these methods for financial trading tasks.
+
+\subsection*{Limitations}
+
+Despite promising results, several limitations remain. The analysis focused solely on the DAX index, limiting generalizability to other assets or markets. The approach was also computationally expensive, and the state representation relied on simple engineered features. Furthermore, reinforcement learning in finance is inherently difficult due to non-stationarity, structural breaks, and noisy reward signals.
+
+\subsection*{Future Work}
+
+Future work could take several directions. For example, it would be useful to test these methods on multiple assets at once and let the agent choose how to split money across them, not just trade one index. It would also make the experiments more realistic to include trading costs and add more rules to limit risk.
+
+Another possible step is to integrate large language models with these trading methods. For example, recent work has explored using language models to assist in live trading with real money while adhering to strict risk protocols \citep{llmtradinglab2024}. Combining language models with simple trading rules could make automated trading systems both smarter and safer.
+
+In conclusion, this study demonstrates the viability of Monte Carlo policy gradient methods \citep{williams1992simple} for financial trading tasks. 
+While further work is required to ensure robustness, 
+the integration of reinforcement learning \citep{hsinhungw2024} with emerging large language model frameworks 
+represents a promising direction for future research.
+
+
+

@@ -1,0 +1,19 @@
+% --- SECTION 3: DATA DESCRIPTION ---
+\section{Data Description}
+
+The dataset used in this study was obtained from Kaggle \citep{kaggle2024} and contains daily historical price data at a one-day interval for all working days for major stock market indices worldwide. The data were originally collected from Yahoo Finance and span several decades (1965–2021). For this project, we selected the German stock market index \textbf{GDAXI (DAX)}, which represents the 40 largest blue-chip companies traded on the Frankfurt Stock Exchange. The DAX serves as a benchmark index for the German equity market and is widely used in financial research due to its liquidity and economic significance.
+
+Although the dataset provides a long historical record, computational constraints required restricting the analysis to a more recent subset. Therefore, we selected the period from January 2016 to December 2021. After filtering and removing missing values introduced during preprocessing, the final dataset consists of 1,369 daily observations. This time window includes multiple market conditions, such as bullish trends, market corrections, and the COVID-19 crisis, thereby providing sufficient variability for RL experiments.
+
+To ensure compatibility with the trading environment, the dataset was structured by sorting observations in ascending chronological order and converting the date column into a \texttt{DatetimeIndex}. The dataset contains standard OHLCV columns including \texttt{open}, \texttt{high}, \texttt{low}, \texttt{close}, \texttt{adj close}, and \texttt{volume}.
+
+To enhance the state representation provided to the reinforcement learning agent, a small number of additional features were engineered. These include:
+
+\begin{itemize}
+    \item Daily log returns (momentum information)
+    \item Rolling volatility (short-term risk estimate)
+    \item Moving average ratio (trend indicator)
+    \item Normalized trading volume (activity indicator)
+\end{itemize}
+
+All engineered features were normalized to stabilize neural network training.

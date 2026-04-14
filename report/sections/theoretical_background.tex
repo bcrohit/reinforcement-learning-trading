@@ -1,0 +1,139 @@
+% --- SECTION 2: THEORETICAL BACKGROUND ---
+\section{Theoretical Background}
+
+\subsection{Reinforcement Learning Framework}
+
+The trading problem is formulated as a Markov Decision Process (MDP), defined by the tuple 
+$(\mathcal{S}, \mathcal{A}, P, R, \gamma)$, where $\mathcal{S}$ denotes the state space, 
+$\mathcal{A}$ the action space, $P$ the transition dynamics, $R$ the reward function, and 
+$\gamma \in (0,1)$ the discount factor.
+
+At each time step $t$, the agent observes a state $s_t$ (constructed from market features), 
+selects an action $a_t$ according to a parameterized stochastic policy $\pi_\theta(a|s)$, 
+receives reward $r_{t+1}$, and transitions to the next state $s_{t+1}$.
+
+The reward function is defined as the logarithmic return of the portfolio valuation:
+\[
+r_t = \ln\left(\frac{p_t}{p_{t-1}}\right),
+\]
+where $p_t$ denotes the portfolio valuation at time step $t$.
+
+The objective is to maximize the expected discounted return:
+
+\[
+J(\theta) = \mathbb{E}_{\pi_\theta} 
+\left[ 
+\sum_{t=0}^{T} \gamma^t r_{t+1} 
+\right].
+\]
+
+In contrast to value-based methods, policy gradient approaches directly optimize 
+the policy parameters $\theta$ to increase expected return \citep{wikipediapolicysradient}.
+
+\subsection{Monte Carlo Policy Gradient (REINFORCE)}
+
+Monte Carlo methods estimate returns using complete sampled episodes. 
+For a trajectory of length $T$, the return from time step $t$ is defined as:
+
+\[
+G_t = \sum_{k=0}^{T-t} \gamma^k r_{t+k+1}.
+\]
+
+Unlike temporal-difference methods, Monte Carlo approaches do not use bootstrapping; 
+they rely solely on actual observed rewards. This leads to unbiased return estimates, 
+but potentially high variance.
+
+Using the log-derivative trick, the gradient of the objective function can be written as:
+
+\[
+\nabla_\theta J(\theta) =
+\mathbb{E}_{\pi_\theta}
+\left[
+G_t \nabla_\theta \log \pi_\theta(a_t|s_t)
+\right].
+\]
+
+This result leads to the REINFORCE update rule \citep{williams1992simple}:
+
+\[
+\theta \leftarrow \theta 
++ \alpha \, G_t \nabla_\theta \log \pi_\theta(a_t|s_t),
+\]
+
+where $\alpha$ is the learning rate.
+
+In practice, the expectation is approximated using sampled trajectories. 
+Updates are performed after each episode, making the algorithm fully Monte Carlo.
+
+\subsection{Variance and Baseline Reduction}
+
+A key limitation of REINFORCE is the high variance of its gradient estimator. 
+In financial environments, rewards are noisy and highly volatile, which can 
+lead to unstable learning and slow convergence.
+
+To reduce variance without introducing bias, a baseline function $b(s_t)$ 
+can be subtracted from the return:
+
+\[
+\nabla_\theta J(\theta)
+=
+\mathbb{E}
+\left[
+(G_t - b(s_t)) \nabla_\theta \log \pi_\theta(a_t|s_t)
+\right].
+\]
+
+If the baseline depends only on the state and not on the action, 
+the estimator remains unbiased. A common choice is the state-value function 
+$V(s_t)$, which estimates the expected return from state $s_t$.
+
+Defining the advantage as
+
+\[
+A_t = G_t - V(s_t),
+\]
+
+the update becomes:
+
+\[
+\theta \leftarrow \theta 
++ \alpha \, A_t \nabla_\theta \log \pi_\theta(a_t|s_t).
+\]
+
+The subtraction centers the gradient signal around zero, 
+reducing variance and improving stability. 
+
+In this project, the performance of standard REINFORCE 
+is compared to REINFORCE with a learned value-function baseline. 
+The comparison focuses on convergence behavior and training stability 
+in a noisy financial environment.
+
+
+\subsection{Practical Stabilization Techniques}
+\label{sec:stabilization}
+
+To address instability and high variance in neural network-based reinforcement learning \citep{wikipediapolicysradient}, these techniques were implemented:
+
+\begin{enumerate}
+    \item \textbf{Return Normalization:}
+    \[
+    \hat{G}_t = \frac{G_t - \mu_G}{\sigma_G + \epsilon}
+    \]
+    Normalizing returns reduces fluctuations in gradient scale, which helps stabilize neural network training, especially when episodic returns can be highly volatile.
+
+    \item \textbf{Gradient Clipping:} \\
+    To prevent exploding gradients during backpropagation, the norm of the gradient $g$ is clipped to a maximum value $c$:
+    \[
+    \|g\| \leq c
+    \]
+    This ensures stable policy updates.
+
+    \item \textbf{Softmax Policy Parameterization:} \\
+    The policy is typically parameterized using a softmax over action preferences to guarantee a valid probability distribution:
+    \[
+    \sum_a \pi_\theta(a|s) = 1
+    \]
+    This preserves sufficient exploration and prevents the policy from collapsing to deterministic actions too early.
+\end{enumerate}
+
+These stabilization techniques are essential for robust RL training in noisy financial domains.
